@@ -30,10 +30,10 @@ void setup() {
   FuzzySet * pequena = new FuzzySet(0, 45, 45, 90);
   abertura->addFuzzySet(pequena);
   
-  FuzzySet * media = new FuzzySet(45, 90, 90, 135);
+  FuzzySet * medio = new FuzzySet(45, 90, 90, 135);
   abertura->addFuzzySet(pequena);
 
-  FuzzySet * alta = new FuzzySet(90, 135, 135, 180);
+  FuzzySet * alto = new FuzzySet(90, 135, 135, 180);
   abertura->addFuzzySet(alta);
 
   fuzzy->addFuzzyOutput(abertura);
@@ -53,8 +53,20 @@ void setup() {
   fuzzy->addFuzzyRule(fuzzyRule01);
 
   // Fazer Regras 2 - Media
+  FuzzyRuleAntecedent *ifPressaoMedia = new FuzzyRuleAntecedent();
+  ifPressaoMedia->joinSingle(media);
+  FuzzyRuleConsequent *thenAberturaMedia = new FuzzyRuleConsequent();
+  thenAnguloMedio->addOutput(medio);
+  FuzzyRule *fuzzyRule02 = new FuzzyRule(2, ifPressaoMedia, thenAnguloMedio);
+  Fuzzy->addFuzzyRule(fuzzyRule02);
 
   // Fazer regra 3 - Alta
+  FuzzyRuleAntecedent *ifPressaoAlta = new FuzzyRuleAntecedent();
+  ifPressaoAlta->joinSingle(Alta);
+  FuzzyRuleConsequent *thenAberturaAlta = new FuzzyRuleConsequent();
+  thenAnduloAlto->addOutput(Alto);
+  FuzzyRule *fuzzyRule02 = new FuzzyRule(3, ifPressaoAlta, thenAnguloAlto);
+  Fuzzy->addFuzzyRule(fuzzyRule03)
 
 }
 
