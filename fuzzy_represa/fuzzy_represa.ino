@@ -54,18 +54,28 @@ void setup() {
 
   // Fazer Regras 2 - Media
   FuzzyRuleAntecedent *ifPressaoMedia = new FuzzyRuleAntecedent();
+  
   ifPressaoMedia->joinSingle(media);
+  
   FuzzyRuleConsequent *thenAberturaMedia = new FuzzyRuleConsequent();
+  
   thenAnguloMedio->addOutput(medio);
+  
   FuzzyRule *fuzzyRule02 = new FuzzyRule(2, ifPressaoMedia, thenAnguloMedio);
+  
   Fuzzy->addFuzzyRule(fuzzyRule02);
 
   // Fazer regra 3 - Alta
   FuzzyRuleAntecedent *ifPressaoAlta = new FuzzyRuleAntecedent();
+  
   ifPressaoAlta->joinSingle(Alta);
+  
   FuzzyRuleConsequent *thenAberturaAlta = new FuzzyRuleConsequent();
+ 
   thenAnduloAlto->addOutput(Alto);
-  FuzzyRule *fuzzyRule02 = new FuzzyRule(3, ifPressaoAlta, thenAnguloAlto);
+  
+  FuzzyRule *fuzzyRule03 = new FuzzyRule(3, ifPressaoAlta, thenAnguloAlto);
+  
   Fuzzy->addFuzzyRule(fuzzyRule03)
 
 }
