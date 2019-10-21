@@ -1,6 +1,6 @@
 #include <Fuzzy.h>
 
-Fuzzy = *fuzzy = new Fuzzy();
+Fuzzy *fuzzy = new Fuzzy();
 int ldr = A0;
 int led = 5;
 
@@ -44,9 +44,9 @@ void setup() {
   
   ifPressaoBaixa->joinSingle(baixa);
   
-  FuzzyRuleConsequent *thenAberturaPequena = new FuzzyRuleConsequent();
+  FuzzyRuleConsequent * thenAnguloBaixo = new FuzzyRuleConsequent();
   
-  thenAnguloBaixo->addOutput(pequena);
+  thenAnguloBaixo -> addOutput(pequena);
  
   FuzzyRule *fuzzyRule01 = new FuzzyRule(1,  ifPressaoBaixa, thenAnguloBaixo);
  
@@ -57,30 +57,49 @@ void setup() {
   
   ifPressaoMedia->joinSingle(media);
   
-  FuzzyRuleConsequent *thenAberturaMedia = new FuzzyRuleConsequent();
+  FuzzyRuleConsequent *thenAnguloMedio = new FuzzyRuleConsequent();
   
   thenAnguloMedio->addOutput(medio);
   
   FuzzyRule *fuzzyRule02 = new FuzzyRule(2, ifPressaoMedia, thenAnguloMedio);
   
-  Fuzzy->addFuzzyRule(fuzzyRule02);
+  fuzzy->addFuzzyRule(fuzzyRule02);
 
   // Fazer regra 3 - Alta
   FuzzyRuleAntecedent *ifPressaoAlta = new FuzzyRuleAntecedent();
   
-  ifPressaoAlta->joinSingle(Alta);
+  ifPressaoAlta->joinSingle(alta);
   
-  FuzzyRuleConsequent *thenAberturaAlta = new FuzzyRuleConsequent();
+  FuzzyRuleConsequent *thenAnguloAlto = new FuzzyRuleConsequent();
  
-  thenAnduloAlto->addOutput(Alto);
+  thenAnguloAlto->addOutput(alto);
   
   FuzzyRule *fuzzyRule03 = new FuzzyRule(3, ifPressaoAlta, thenAnguloAlto);
   
-  Fuzzy->addFuzzyRule(fuzzyRule03)
+  fuzzy->addFuzzyRule(fuzzyRule03);
 
 }
 
 void loop() {
   // Realizar Operações
+
+    // Teste com variáveis aleatórias
+     int input = random(0, 1023);
+    // Printing something
+    Serial.println("\n\n\nEntrance: ");
+    Serial.print("\t\t\tPressao: ");
+    Serial.println(input);
+    // Set the random value as an input
+    fuzzy->setInput(1, input);
+    // Running the Fuzzification
+    fuzzy->fuzzify();
+    // Running the Defuzzification
+    float output = fuzzy->defuzzify(1);
+    // Printing something
+    Serial.println("Result: ");
+    Serial.print("\t\t\tAbertura: ");
+    Serial.println(output);
+    // wait 12 seconds
+    delay(12000);
 
 }
