@@ -1,6 +1,7 @@
 #include <Fuzzy.h>
 
 Fuzzy *fuzzy = new Fuzzy();
+
 int ldr = A0;
 int led = 5;
 
@@ -8,11 +9,12 @@ void setup() {
 
   pinMode(led,OUTPUT);
   Serial.begin(9600);
+  randomSeed(analogRead(0));
 
   //Conjuntos  de entrada
   FuzzyInput *pressao = new FuzzyInput(1);
 
-  FuzzySet *alta = new FuzzySet(0,0,300,500);
+  FuzzySet *alta = new FuzzySet(0,100,300,500);
   pressao -> addFuzzySet(alta);
 
   FuzzySet *media = new FuzzySet(300,500,700,800);
@@ -31,51 +33,36 @@ void setup() {
   abertura->addFuzzySet(pequena);
   
   FuzzySet * medio = new FuzzySet(45, 90, 90, 135);
-  abertura->addFuzzySet(pequena);
+  abertura->addFuzzySet(medio);
 
-  FuzzySet * alto = new FuzzySet(90, 135, 135, 180);
-  abertura->addFuzzySet(alta);
+  FuzzySet * alto = new FuzzySet(90, 135, 180, 180);
+  abertura->addFuzzySet(alto);
 
   fuzzy->addFuzzyOutput(abertura);
 
   //Regras 
   
   FuzzyRuleAntecedent *ifPressaoBaixa = new FuzzyRuleAntecedent();
-  
   ifPressaoBaixa->joinSingle(baixa);
-  
   FuzzyRuleConsequent * thenAnguloBaixo = new FuzzyRuleConsequent();
-  
-  thenAnguloBaixo -> addOutput(pequena);
- 
-  FuzzyRule *fuzzyRule01 = new FuzzyRule(1,  ifPressaoBaixa, thenAnguloBaixo);
- 
+  thenAnguloBaixo -> addOutput(pequena); 
+  FuzzyRule *fuzzyRule01 = new FuzzyRule(1,  ifPressaoBaixa, thenAnguloBaixo); 
   fuzzy->addFuzzyRule(fuzzyRule01);
 
   // Fazer Regras 2 - Media
   FuzzyRuleAntecedent *ifPressaoMedia = new FuzzyRuleAntecedent();
-  
   ifPressaoMedia->joinSingle(media);
-  
   FuzzyRuleConsequent *thenAnguloMedio = new FuzzyRuleConsequent();
-  
   thenAnguloMedio->addOutput(medio);
-  
   FuzzyRule *fuzzyRule02 = new FuzzyRule(2, ifPressaoMedia, thenAnguloMedio);
-  
   fuzzy->addFuzzyRule(fuzzyRule02);
 
   // Fazer regra 3 - Alta
   FuzzyRuleAntecedent *ifPressaoAlta = new FuzzyRuleAntecedent();
-  
   ifPressaoAlta->joinSingle(alta);
-  
   FuzzyRuleConsequent *thenAnguloAlto = new FuzzyRuleConsequent();
- 
   thenAnguloAlto->addOutput(alto);
-  
   FuzzyRule *fuzzyRule03 = new FuzzyRule(3, ifPressaoAlta, thenAnguloAlto);
-  
   fuzzy->addFuzzyRule(fuzzyRule03);
 
 }
@@ -94,12 +81,12 @@ void loop() {
     // Running the Fuzzification
     fuzzy->fuzzify();
     // Running the Defuzzification
-    float output = fuzzy->defuzzify(1);
+    int output = fuzzy->defuzzify(1);
     // Printing something
     Serial.println("Result: ");
     Serial.print("\t\t\tAbertura: ");
     Serial.println(output);
     // wait 12 seconds
-    delay(12000);
+    delay(2000);
 
 }
