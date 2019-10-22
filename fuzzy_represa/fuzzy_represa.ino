@@ -1,13 +1,20 @@
 #include <Fuzzy.h>
+#include <Servo.h>
+#define SERVO 6 // Porta Digital 6 (PWM)
 
 Fuzzy *fuzzy = new Fuzzy();
 
+Servo s;
 int ldr = A0;
+int pot = A5;
 int led = 5;
+int luminosidade = 0;
 
 void setup() {
 
   pinMode(led,OUTPUT);
+  s.attach(SERVO);
+  s.write(0);
   Serial.begin(9600);
   randomSeed(analogRead(0));
 
@@ -69,24 +76,24 @@ void setup() {
 
 void loop() {
   // Realizar Operações
+    
+    luminosidade = analogRead(pot);
+    luminosidade = map(luminosidade,0,1023,0,255);
+    analogWrite(led,luminosidade);
 
-    // Teste com variáveis aleatórias
-     int input = random(0, 1023);
-    // Printing something
-    Serial.println("\n\n\nEntrance: ");
-    Serial.print("\t\t\tPressao: ");
-    Serial.println(input);
-    // Set the random value as an input
+    // Passar a luminosidade capitada no ldr como entrada
+    int input = analogRead(ldr);
     fuzzy->setInput(1, input);
-    // Running the Fuzzification
+    
+    //Running the Fuzzification
     fuzzy->fuzzify();
+    
     // Running the Defuzzification
     int output = fuzzy->defuzzify(1);
-    // Printing something
-    Serial.println("Result: ");
+    // Result in Servo
+    s.write(output);
+    
     Serial.print("\t\t\tAbertura: ");
     Serial.println(output);
-    // wait 12 seconds
-    delay(2000);
 
 }
